@@ -45,7 +45,7 @@ AirAccessory.prototype = {
     getAirData: function (callback) {
         var self = this;
         var aqi = 0;
-        var url = 'https://airapi.airly.eu/v2/measurements/point?lat' + this.latitude + '&lng=' + this.longitude;
+        var url = 'https://airapi.airly.eu/v2/measurements/point?lat=' + this.latitude + '&lng=' + this.longitude;
 
 
         // Make request only every ten minutes
@@ -89,10 +89,10 @@ AirAccessory.prototype = {
 
         airService.setCharacteristic(Characteristic.StatusFault, 0);
 
-        airService.setCharacteristic(Characteristic.PM2_5Density, data.pm25);
-        airService.setCharacteristic(Characteristic.PM10Density, data.pm10);
+        airService.setCharacteristic(Characteristic.PM2_5Density, data.current.values[1].value);
+        airService.setCharacteristic(Characteristic.PM10Density, data.current.values[2].value);
 
-        var aqi = data.airQualityIndex;
+        var aqi = data.current.indexes[0].value;
         this.log.info("[%s] Airly air quality is: %s.", type, aqi.toString());
 
         this.cache = data;
